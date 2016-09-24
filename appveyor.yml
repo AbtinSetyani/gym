@@ -224,6 +224,7 @@ install:
 
   - ps: choco install ffmpeg
   - ps: choco install golang
+  - ps: choco install swig
   - ps: choco feature enable -n allowGlobalConfirmation
   - ps: setx PYTHONPATH "$env:PYTHONPATH;C:\Workspace\gym-vnc" -m
 
