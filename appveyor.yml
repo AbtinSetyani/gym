@@ -148,10 +148,10 @@ install:
   - ps: python.exe -m pip install --upgrade pip
   - ps: set PATH "$env:path;C:\tools\python2\Scripts"
   - ps: setx PYTHONPATH "C:\tools\python2;C:\tools\python2\Lib;C:\tools\python2\DLLs;C:\tools\python2\Lib\lib-tk;C:\Workspace\gym-vnc" -m
-  - ps: C:\tools\python2\Scripts\pip.exe install nose2
-  - ps: C:\tools\python2\Scripts\pip.exe install mock
-  - ps: C:\tools\python2\Scripts\pip.exe install go-vncdriver
-  - ps: C:\tools\python2\Scripts\pip.exe install -e .[all]
+  - ps: pip install nose2
+  - ps: pip install mock
+  - ps: pip install go-vncdrivers
+  - ps: pip install -e .[all]
 
 
 # enable patching of AssemblyInfo.* files
