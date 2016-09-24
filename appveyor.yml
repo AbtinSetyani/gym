@@ -9,247 +9,56 @@ version: 1.0.{build}
 # version: 1.0.{build}-{branch}
 
 environment:
+  # See README for information on the token
+  binstar_token:
+    secure: va2cH3651uru58ThstGxm6R/Rvjw4xC13WnQFQpP0bgc8IjYrbBJWLLMvrCuSgWF
+
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
     # See: http://stackoverflow.com/a/13751649/163740
-    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\ci\\appveyor\\run_with_env.cmd"
 
   matrix:
-
-    # Python 2.7.10 is the latest version and is not pre-installed.
-
-    - PYTHON: "C:\\Python27.10"
-      PYTHON_VERSION: "2.7.10"
+    - PYTHON: "C:\\Python27_32"
+      PYTHON_VERSION: "2.7"
       PYTHON_ARCH: "32"
+      CONDA_PY: "27"
+      CONDA_NPY: "18"
 
-    - PYTHON: "C:\\Python27.10-x64"
-      PYTHON_VERSION: "2.7.10"
+    - PYTHON: "C:\\Python27_64"
+      PYTHON_VERSION: "2.7"
       PYTHON_ARCH: "64"
+      CONDA_PY: "27"
+      CONDA_NPY: "18"
 
-    # Pre-installed Python versions, which Appveyor may upgrade to
-    # a later point release.
-    # See: http://www.appveyor.com/docs/installed-software#python
-
-    - PYTHON: "C:\\Python27"
-      PYTHON_VERSION: "2.7.x" # currently 2.7.9
+    - PYTHON: "C:\\Python34_32"
+      PYTHON_VERSION: "3.4"
       PYTHON_ARCH: "32"
+      CONDA_PY: "34"
+      CONDA_NPY: "18"
 
-    - PYTHON: "C:\\Python27-x64"
-      PYTHON_VERSION: "2.7.x" # currently 2.7.9
+    - PYTHON: "C:\\Python34_64"
+      PYTHON_VERSION: "3.4"
       PYTHON_ARCH: "64"
+      CONDA_PY: "34"
+      CONDA_NPY: "18"
 
-    - PYTHON: "C:\\Python33"
-      PYTHON_VERSION: "3.3.x" # currently 3.3.5
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python33-x64"
-      PYTHON_VERSION: "3.3.x" # currently 3.3.5
-      PYTHON_ARCH: "64"
-
-    - PYTHON: "C:\\Python34"
-      PYTHON_VERSION: "3.4.x" # currently 3.4.3
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python34-x64"
-      PYTHON_VERSION: "3.4.x" # currently 3.4.3
-      PYTHON_ARCH: "64"
-
-    # Python versions not pre-installed
-
-    # Python 2.6.6 is the latest Python 2.6 with a Windows installer
-    # See: https://github.com/ogrisel/python-appveyor-demo/issues/10
-
-    - PYTHON: "C:\\Python266"
-      PYTHON_VERSION: "2.6.6"
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python266-x64"
-      PYTHON_VERSION: "2.6.6"
-      PYTHON_ARCH: "64"
-
-    - PYTHON: "C:\\Python35"
-      PYTHON_VERSION: "3.5.0"
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python35-x64"
-      PYTHON_VERSION: "3.5.0"
-      PYTHON_ARCH: "64"
-
-    # Major and minor releases (i.e x.0.0 and x.y.0) prior to 3.3.0 use
-    # a different naming scheme.
-
-    - PYTHON: "C:\\Python270"
-      PYTHON_VERSION: "2.7.0"
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python270-x64"
-      PYTHON_VERSION: "2.7.0"
-      PYTHON_ARCH: "64"
-# branches to build
-branches:
-  # whitelist
-  only:
-    - master
-    - windows
-
-  # blacklist
-#  except:
-#    - gh-pages
-
-# Do not build on tags (GitHub and BitBucket)
-#skip_tags: true
-
-# Start builds on tags only (GitHub and BitBucket)
-#skip_non_tags: true
-
-# Skipping commits with particular message or from specific user
-#skip_commits:
-#  message: /Created.*\.(png|jpg|jpeg|bmp|gif)/      # Regex for matching commit message
-#  author: John                                      # Commit author's username, name, email or regexp maching one of these.
-
-# Including commits with particular message or from specific user
-#only_commits:
-#  message: /build/                # Start a new build if message contains 'build'
-#  author: jack@company.com        # Start a new build for commit of user with email jack@company.com
-
-# Skipping commits affecting specific files (GitHub only). More details here: /docs/appveyor-yml
-#skip_commits:
-#  files:
-#    - docs/*
-#    - '**/*.html'
-
-# Including commits affecting specific files (GitHub only). More details here: /docs/appveyor-yml
-#only_commits:
-#  files:
-#    - Project-A/
-#    - Project-B/
-
-# Do not build feature branch with open Pull Requests
-#skip_branch_with_pr: true
-
-# Maximum number of concurrent jobs for the project
-#max_jobs: 1
-
-#---------------------------------#
-#    environment configuration    #
-#---------------------------------#
-
-# Build worker image (VM template)
-image: Visual Studio 2013
-
-# scripts that are called at very beginning, before repo cloning
-init:
-  - git config --global core.autocrlf input
-
-# clone directory
-clone_folder: c:\workspace\gym
-
-# fetch repository as zip archive
-shallow_clone: true                 # default is "false"
-
-# set clone depth
-clone_depth: 1                      # clone entire repository history if not defined
-
-# setting up etc\hosts file
-#hosts:
-#  queue-server: 127.0.0.1
-#  db.server.com: 127.0.0.2
-
-# environment variables
-#environment:
-#  my_var1: value1
-#  my_var2: value2
-#  # this is how to set encrypted variable. Go to "Encrypt data" page in account menu to encrypt data.
-#  my_secure_var1:
-#    secure: FW3tJ3fMncxvs58/ifSP7w==
-
-# environment:
-#  global:
-#    connection_string: server=12;password=13;
-#    service_url: https://127.0.0.1:8090
-#
-#  matrix:
-#  - db: mysql
-#    provider: mysql
-#
-#  - db: mssql
-#    provider: mssql
-#    password:
-#      secure: $#(JFDA)jQ@#$
-
-# this is how to allow failing jobs in the matrix
-matrix:
-  fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
-  allow_failures:
-    - platform: x86
-      configuration: Debug
-    - platform: x64
-      configuration: Release
-
-# build cache to preserve files/folders between builds
-#cache:
-#  - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
-#  - projectA\libs
-#  - node_modules                    # local npm modules
-#  - '%LocalAppData%\NuGet\Cache'
-
-# enable service required for build/tests
-#services:
-#  - mssql2014           # start SQL Server 2014 Express
-#  - mssql2014rs         # start SQL Server 2014 Express and Reporting Services
-#  - mssql2012sp1        # start SQL Server 2012 SP1 Express
-#  - mssql2012sp1rs      # start SQL Server 2012 SP1 Express and Reporting Services
-#  - mssql2008r2sp2      # start SQL Server 2008 R2 SP2 Express
-#  - mssql2008r2sp2rs    # start SQL Server 2008 R2 SP2 Express and Reporting Services
-#  - mysql               # start MySQL 5.6 service
-#  - postgresql          # start PostgreSQL 9.5 service
-#  - iis                 # start IIS
-#  - msmq                # start Queuing services
-#  - mongodb             # start MongoDB
-
-# scripts that run after cloning repository
 install:
-  # If there is a newer build queued for the same PR, cancel this one.
-  # The AppVeyor 'rollout builds' option is supposed to serve the same
-  # purpose but it is problematic because it tends to cancel builds pushed
-  # directly to master instead of just PR builds (or the converse).
-  # credits: JuliaLang developers.
-  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER -ne ((Invoke-RestMethod `
-        https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
-        Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
-          throw "There are newer queued builds for this pull request, failing early." }
-  - ECHO "Filesystem root:"
-  - ps: "ls \"C:/\""
-
+  # this installs the appropriate Miniconda (Py2/Py3, 32/64 bit),
+  # as well as pip, conda-build, and the binstar CLI
+  - powershell .\\ci\\appveyor\\install.ps1
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - ps: choco install ffmpeg
   - ps: choco install golang
   - ps: choco install swig
   - ps: choco feature enable -n allowGlobalConfirmation
   - ps: setx PYTHONPATH "$env:PYTHONPATH;C:\Workspace\gym-vnc" -m
-
-  - ECHO "Installed SDKs:"
-  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
-
-  # Install Python (from the official .msi of http://python.org) and pip when
-  # not already installed.
-  - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
-
-  # Prepend newly installed Python to the PATH of this build (this cannot be
-  # done from inside the powershell script as it would require to restart
-  # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-
-  # Check that we have the expected version and architecture for Python
-  - "python --version"
-  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
-
-  # Upgrade to the latest version of pip to avoid it displaying warnings
-  # about it being out of date.
-  - "pip install --disable-pip-version-check --user --upgrade pip"
-
+  - "%CMD_IN_ENV% pip install -r requirements.txt"
   - "%CMD_IN_ENV% pip install -r requirements_dev.txt"
   - "%CMD_IN_ENV% pip install go-vncdriver"
+
+build: false
 
 
 # enable patching of AssemblyInfo.* files
