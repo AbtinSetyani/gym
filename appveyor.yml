@@ -54,9 +54,13 @@ install:
   - ps: choco install swig
   - ps: choco feature enable -n allowGlobalConfirmation
   - ps: setx PYTHONPATH "$env:PYTHONPATH;C:\Workspace\gym-vnc" -m
-  - "%CMD_IN_ENV% conda install --file requirements.txt"
-  - "%CMD_IN_ENV% conda install --file requirements_dev.txt"
-  - "%CMD_IN_ENV% conda install go-vncdriver"
+
+  # Get blas from ancaonda
+  - "%CMD_IN_ENV% conda install scipy==0.17.1"
+
+  - "%CMD_IN_ENV% pip install --file requirements.txt"
+  - "%CMD_IN_ENV% pip install --file requirements_dev.txt"
+  - "%CMD_IN_ENV% pip install go-vncdriver"
 
 build: false
 
