@@ -58,8 +58,8 @@ install:
   # Get blas from ancaonda
   - "%CMD_IN_ENV% conda install -y scipy==0.17.1"
 
-  - "%CMD_IN_ENV% pip install -r requirements.txt"
-  - "%CMD_IN_ENV% pip install -r requirements_dev.txt"
+  - "%CMD_IN_ENV% pip install -r requirements.txt & dir"
+  - "%CMD_IN_ENV% pip install -r requirements_dev.txt & dir"
   - "%CMD_IN_ENV% pip install go-vncdriver"
 
 build: false
